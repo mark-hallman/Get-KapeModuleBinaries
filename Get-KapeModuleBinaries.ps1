@@ -9,7 +9,7 @@
 .PARAMETER ModulePath
     The path containing KAPE module files.   
 .EXAMPLE
-    PS C:\Tools> Get-KapeModuleBinaries.ps1 -Dest c:\tools -ModulesPath "C:\Forensic Program Files\Zimmerman\Kape\Modules"
+    PS C:\Tools> Get-KapeModuleBinaries.ps1 -Dest c:\tools -ModulePath "C:\Forensic Program Files\Zimmerman\Kape\Modules"
     Downloads/extracts and saves details about programs to c:\tools directory.
 .NOTES
     This script was created from Eric Zimmerman's Get-ZimmermanTools script. I just modified a few things to have it parse the mkape files and download binaries

@@ -21,5 +21,5 @@ PS C:\Tools> Set-ExecutionPolicy -executionpolicy bypass
 ## Example
 Downloads/extracts and saves details about programs to c:\tools directory.
 
-PS C:\Tools> .\Get-KapeModuleBinaries.ps1 -Dest c:\tools -ModulesPath "C:\Forensic Program Files\Zimmerman\Kape\Modules"
+PS C:\Tools> .\Get-KapeModuleBinaries.ps1 -Dest c:\tools -ModulePath "C:\Forensic Program Files\Zimmerman\Kape\Modules"
 
