@@ -1,4 +1,13 @@
-# Get-ZimmermanTools
-This script will auto-discover all available downloads and download what does not already exist in a given destination directory.
+# Get-KapeModuleBinaries
+Downloads binaries used by KAPE
 
-The script does not check for what is on disk, but uses what is in a CSV file that this script generates to know what to download based on SHA-1 hash.
+This script will discover and download all available EXE, ZIP, and PS1 files referenced in KAPE Module files and download them to $Dest
+
+This was created from Eric Zimmerman's Get-ZimmermanTools script. I just modified a few things to have it parse the KAPE module (mkape) files and download binaries.
+
+
+## Example
+Downloads/extracts and saves details about programs to c:\tools directory.
+
+PS C:\Tools> .\Get-KapeModuleBinaries.ps1 -Dest c:\tools -ModulesPath "C:\Forensic Program Files\Zimmerman\Kape\Modules"
+
