@@ -1,0 +1,15 @@
+https://download.sysinternals.com/files/Autoruns.zip
+https://download.sysinternals.com/files/Sigcheck.zip  
+https://f001.backblazeb2.com/file/EricZimmermanTools/AmcacheParser.zip
+https://f001.backblazeb2.com/file/EricZimmermanTools/AppCompatCacheParser.zip
+https://f001.backblazeb2.com/file/EricZimmermanTools/EvtxExplorer.zip
+https://f001.backblazeb2.com/file/EricZimmermanTools/JLECmd.zip
+https://f001.backblazeb2.com/file/EricZimmermanTools/LECmd.zip
+https://f001.backblazeb2.com/file/EricZimmermanTools/MFTECmd.zip
+https://f001.backblazeb2.com/file/EricZimmermanTools/PECmd.zip
+https://f001.backblazeb2.com/file/EricZimmermanTools/RBCmd.zip
+https://f001.backblazeb2.com/file/EricZimmermanTools/RecentFileCacheParser.zip
+https://f001.backblazeb2.com/file/EricZimmermanTools/RegistryExplorer_RECmd.zip
+https://f001.backblazeb2.com/file/EricZimmermanTools/ShellBagsExplorer.zip
+https://f001.backblazeb2.com/file/EricZimmermanTools/VSCMount.zip
+https://github.com/MarkBaggett/srum-dump/raw/python3/srum_dump_csv.exe
