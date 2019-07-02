@@ -11,7 +11,7 @@
 $ZimmermanToolsLocation = "C:\Forensic Program Files\Zimmerman"
 $KapeLocation           = "C:\Forensic Program Files\KAPE"
 $BinaryListPath         = "KAPE-Default-Binaries.txt"
-$BinUpdateCommand = ".\Get-KapeModuleBinaries.ps1 -ModulePath $KapeLocation\Modules -UseBinaryList -BinaryListPath $KapeLocation\$BinaryListPath -dest '$KapeLocation\Modules\bin'"
+$BinUpdateCommand = ".\Get-KapeModuleBinaries.ps1 -ModulePath .\Modules -UseBinaryList -BinaryListPath .\$BinaryListPath -dest .\Modules\bin"
 
 Write-Host "`nUpdating Zimmerman Tools in Folder $ZimmermanToolsLocation`n" -ForegroundColor Green
 Set-Location -Path $ZimmermanToolsLocation            # cd to Zimmermantools folder
@@ -25,5 +25,6 @@ Write-Host "`nUpdating KAPE Targets and Modules in Folder $KapeLocation`n" -Fore
 Invoke-Command -ScriptBlock {kape --sync}             # run KAPE --sync to get new Targets & Modules
 
 Write-Host "`nUpdating KAPE Modules Binaries in Folder $KapeLocation`n" -ForegroundColor Green
+Write-Host "`n $BinUpdateCommand`n"
 Invoke-Expression -Command $BinUpdateCommand          # run command to update KAPE binaries.  See script for more details
 Write-Host "`EZ Update Complete ...`n" -ForegroundColor Green
