@@ -8,10 +8,10 @@
             2019-07-01
 #>
 
-$ZimmermanToolsLocation = "C:\Tools\ZimmermanTools"
-$KapeLocation           = "C:\Tools\KAPE"
+$ZimmermanToolsLocation = "C:\Forensic Program Files\Zimmerman"
+$KapeLocation           = "C:\Forensic Program Files\KAPE"
 $BinaryListPath         = "KAPE-Default-Binaries.txt"
-$BinUpdateCommand = ".\Get-KapeModuleBinaries-DEV.ps1 -ModulePath $KapeLocation\Modules -UseBinaryList -BinaryListPath $KapeLocation\$BinaryListPath -dest '$KapeLocation\Modules\bin'"
+$BinUpdateCommand = ".\Get-KapeModuleBinaries.ps1 -ModulePath $KapeLocation\Modules -UseBinaryList -BinaryListPath $KapeLocation\$BinaryListPath -dest '$KapeLocation\Modules\bin'"
 
 Write-Host "`nUpdating Zimmerman Tools in Folder $ZimmermanToolsLocation`n" -ForegroundColor Green
 Set-Location -Path $ZimmermanToolsLocation            # cd to Zimmermantools folder

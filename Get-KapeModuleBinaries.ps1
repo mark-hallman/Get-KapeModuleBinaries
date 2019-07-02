@@ -233,7 +233,7 @@ if ($toDownload.Count -eq 0)
 #    Write-Host "`n.\7z\7za.exe needed! Exiting`n" -BackgroundColor Red
 #    return
 #} 
-set-alias sz ".\7z\7za.exe"  
+#set-alias sz ".\7z\7za.exe"  
 
 $downloadedOK = @()
 
