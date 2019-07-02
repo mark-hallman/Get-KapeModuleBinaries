@@ -1,6 +1,11 @@
 <#
 .SYNOPSIS
-    This is a wrapprer script that updates Zimmermantools, KAPE, KAPE Targets, Modules, and Module binaries
+    This is a wrapprer script that updates Zimmermantools, KAPE, KAPE Targets, Modules, and Module binaries.  
+    The script was written to help SANS DFIR students to keep KAPE binaries in sync with the updates made
+    by Get-ZimmermanTools.ps1 and Get-KAPEUpdate.ps1.
+.NOTES
+    Author: Mark Hallman
+            2019-07-01
 #>
 
 $ZimmermanToolsLocation = "C:\Tools\ZimmermanTools"
