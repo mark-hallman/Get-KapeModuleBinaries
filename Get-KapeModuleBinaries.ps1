@@ -338,14 +338,14 @@ foreach($webItems in $webKeyCollection)
 
 # Check to make sure \EvtxExplorer is in $dest before doing anything
 if (Test-Path "$Dest\EvtxExplorer"){
-    # Rename EvtxExplorer directory to EvtxECmd to match path in EvtxECmd.mkape
+    # Move EvtxExplorer directory to EvtxECmd to match path in EvtxECmd.mkape
     try
     {
-        Rename-Item -Path "$Dest\EvtxExplorer" -NewName "$Dest\EvtxECmd" -Force -ErrorAction Stop
+        Move-Item -Path "$Dest\EvtxExplorer" -Destination "$Dest\EvtxECmd" -Force -ErrorAction Stop
     }
     catch
     {
-        Write-Host "Unable to rename $Dest\EvtxExplorer to $Dest\EvtxECmd. Directory may need to be manually renamed for EvtxECmd.mkape to function properly"
+        Write-Host "Unable to move $Dest\EvtxExplorer to $Dest\EvtxECmd. Directory may need to be manually renamed for EvtxECmd.mkape to function properly"
     }
 }
 
@@ -353,7 +353,7 @@ if (Test-Path "$Dest\EvtxExplorer"){
 
 # Check to make sure \RegistryExplorer is in $dest before doing anything
 if (Test-Path "$Dest\RegistryExplorer"){
-    $reCmdDir = "$dest\ReCmd"
+    $reCmdDir = "$dest\RECmd"
     if(!(Test-Path -Path $ReCmdDir))
     {
         try
@@ -362,11 +362,11 @@ if (Test-Path "$Dest\RegistryExplorer"){
         }
         catch
         {
-            Write-Host "Unable to create directory path: $RECmdDir. You may need to manually create \Kape\Modules\Bin\ReCmd" -ForegroundColor Yellow
+            Write-Host "Unable to create directory path: $RECmdDir. You may need to manually create \Kape\Modules\Bin\RECmd" -ForegroundColor Yellow
         }
     } 
 
-    $reCmdChanges = @("$Dest\RegistryExplorer\ReCmd.exe","$Dest\RegistryExplorer\BatchExamples\*.reb","$Dest\RegistryExplorer\Plugins")
+    $reCmdChanges = @("$Dest\RegistryExplorer\RECmd.exe","$Dest\RegistryExplorer\BatchExamples\*.reb","$Dest\RegistryExplorer\Plugins")
 
     foreach($change in $reCmdChanges) {
         try
