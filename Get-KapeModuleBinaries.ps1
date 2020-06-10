@@ -418,5 +418,39 @@ foreach($tool in $toolPath){
     }
 }
 
+# Additonal cleanup of tools that must be renamed in \KAPE\Modules\bin
+$toolPath = @("$Dest\exiftool(-k).exe","exiftool.exe","$Dest\winpmem_3.2.exe","winpmem.exe")
+$toolCount = ($toolPath.count)/2
+for ($i=0; $i -le $toolCount; $i+=2){
+	$tool = $toolPath[$i]
+	$newName = $toolPath[$i+1]
+    # Check to make sure each $tool is in the $dest before doing anything
+    if (Test-Path $toolPath[$i]){
+		# If the downloaded tool exists, check for the renamed version
+		if (!(Test-Path "$Dest\$newName")){
+			# If the tool has not been renamed, do that
+			try
+			{
+				Rename-Item -Path $toolPath[$i] -NewName $newName -Force -ErrorAction Stop
+			}
+			catch
+			{
+				Write-Host "Unable to rename $tool to $newName. You may need to manually rename this for the module to function properly." -ForegroundColor Yellow
+			}
+		}
+		else {
+			# Otherwise, both exist.  Remove the original downloaded file
+			try
+			{
+				Remove-Item -Path $toolPath[$i] -Force -ErrorAction Stop
+			}
+			catch
+			{
+				Write-Host "Unable to delete $tool. You may need to manually delete this file." -ForegroundColor Yellow
+			}
+		}
+    }
+}
+
 Write-host "`nSaving downloaded version information to $localDetailsFile`n" -ForegroundColor Red
 $downloadedOK | export-csv -Path  $localDetailsFile
