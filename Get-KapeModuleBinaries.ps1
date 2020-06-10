@@ -103,7 +103,7 @@ if($UseBinaryList){
     }
         
         $progressPreference = 'Continue'
-        $regex = [regex] '(?i)\b(http.)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$].(zip|txt|ps1|exe)'
+        $regex = [regex] '(?i)\b(http|https)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$].(zip|txt|ps1|exe)'
         $matchdetails = $regex.Match($BinaryContent)  
 }
 
@@ -120,7 +120,7 @@ elseif($CreateBinaryList){
     } 
 
     $progressPreference = 'Continue'
-    $regex = [regex] '(?i)\b(http.)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$].(zip|txt|ps1|exe)'
+    $regex = [regex] '(?i)\b(http|https)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$].(zip|txt|ps1|exe)'
     $matchdetails = $regex.Matches($mkapeContent) | Select-Object -Unique
 
     Write-Output $matchdetails.value
@@ -140,7 +140,7 @@ else
     } 
 
     $progressPreference = 'Continue'
-    $regex = [regex] '(?i)\b(http.)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$].(zip|txt|ps1|exe)'
+    $regex = [regex] '(?i)\b(http|https)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$].(zip|txt|ps1|exe)'
     $matchdetails = $regex.Match($mkapeContent)
     
     
