@@ -112,7 +112,7 @@ elseif($CreateBinaryList){
     Write-Host "`nDumping list of Binary URLs to console" -BackgroundColor Blue
     try
     {
-        $mkapeContent = Get-Content $modulePath\*.mkape -ErrorAction Stop
+        $mkapeContent = Get-ChildItem -Path $modulePath -Recurse -Filter *.mkape | Get-Content -ErrorAction Stop
     }
     catch
     {
@@ -132,7 +132,7 @@ else
     $progressPreference = 'silentlyContinue'
     try
     {
-        $mkapeContent = Get-Content $modulePath\*.mkape -ErrorAction Stop
+        $mkapeContent = Get-ChildItem -Path $modulePath -Recurse -Filter *.mkape | Get-Content -ErrorAction Stop
     }
     catch
     {
