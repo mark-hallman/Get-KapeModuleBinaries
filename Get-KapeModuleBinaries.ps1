@@ -391,7 +391,7 @@ if (Test-Path "$Dest\RegistryExplorer"){
 }
 
 # Additonal cleanup of tools that must reside directly in \Kape\Modules\Bin
-$toolPath = @("$Dest\ShellBagsExplorer\SBECmd.exe","$Dest\win64\densityscout.exe","$Dest\sqlite-tools-win32-x86-3270200\*.exe")
+$toolPath = @("$Dest\ShellBagsExplorer\SBECmd.exe","$Dest\win64\densityscout.exe","$Dest\sqlite-tools-win32-x86-3270200\*.exe","$Dest\volatility_2.6_win64_standalone\volatility_2.6_win64_standalone.exe")
 foreach($tool in $toolPath){
 
     # Check to make sure each $tool is in $dest before doing anything
