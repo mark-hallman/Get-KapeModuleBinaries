@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     This script will discover and download all available EXE, ZIP, and PS1 files referenced in KAPE Module files and download them to $Dest
     or optionally can be fed a txt file containing URLs to download.
@@ -418,10 +418,28 @@ foreach($tool in $toolPath){
     }
 }
 
-# Additonal cleanup of tools that must be renamed in \KAPE\Modules\bin
-$toolPath = @("$Dest\exiftool(-k).exe","exiftool.exe","$Dest\winpmem_3.2.exe","winpmem.exe")
-$toolCount = ($toolPath.count)/2
-for ($i=0; $i -le $toolCount; $i+=2){
+# Additonal files to copy to \Kape\Modules\Bin
+$toolPath = @("$Dest\RegRipper2.8-master\p2x5124.dll")
+foreach($tool in $toolPath){
+
+    # Check to make sure each $tool is in $dest before doing anything
+    if (Test-Path $tool){
+        try
+        {
+            Copy-Item -Path $tool -Destination $Dest -Force -ErrorAction Stop
+        }
+        catch
+        {
+            Write-Host "Unable to copy $tool to $Dest. You may need to manually copy this for the module to function properly" -ForegroundColor Yellow
+        }
+    }
+}
+
+# Additonal cleanup of tools that must be renamed in \Kape\Modules\Bin
+$toolPath = @("$Dest\exiftool(-k).exe","exiftool.exe","$Dest\winpmem_3.2.exe","winpmem.exe","$Dest\RegRipper2.8-master","regripper")
+$i = 0
+$toolCount = $toolPath.count
+while ($i -lt $toolCount){
 	$tool = $toolPath[$i]
 	$newName = $toolPath[$i+1]
     # Check to make sure each $tool is in the $dest before doing anything
@@ -442,7 +460,7 @@ for ($i=0; $i -le $toolCount; $i+=2){
 			# Otherwise, both exist.  Remove the original downloaded file
 			try
 			{
-				Remove-Item -Path $toolPath[$i] -Force -ErrorAction Stop
+				Remove-Item -Path $toolPath[$i] -Recurse -Force -ErrorAction Stop
 			}
 			catch
 			{
@@ -450,6 +468,7 @@ for ($i=0; $i -le $toolCount; $i+=2){
 			}
 		}
     }
+	$i+=2
 }
 
 Write-host "`nSaving downloaded version information to $localDetailsFile`n" -ForegroundColor Red
