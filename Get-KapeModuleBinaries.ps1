@@ -436,7 +436,7 @@ foreach($tool in $toolPath){
 }
 
 # Additonal cleanup of tools that must be renamed in \Kape\Modules\Bin
-$toolPath = @("$Dest\exiftool(-k).exe","exiftool.exe","$Dest\winpmem_3.2.exe","winpmem.exe","$Dest\RegRipper2.8-master","regripper")
+$toolPath = @("$Dest\exiftool(-k).exe","exiftool.exe","$Dest\winpmem_3.2.exe","winpmem.exe","$Dest\RegRipper3.0-master","regripper","$Dest\win32","win32","$Dest\KAPE","KAPE")
 $i = 0
 $toolCount = $toolPath.count
 while ($i -lt $toolCount){
@@ -471,5 +471,39 @@ while ($i -lt $toolCount){
 	$i+=2
 }
 
+# Create folder for timeline tools and move related executables
+$timelineTools = @("unicode_2_ascii.exe","evtxECmd_2_tln.exe","evtparse.exe","bodyfile.exe","parse.exe","regtime.exe")
+$i = 0
+$toolCount = $timelineTools.count
+if (!(Test-Path "$Dest\tln_tools")){
+	try
+	{
+		New-Item -Path "$Dest\tln_tools" -ItemType Directory > $null
+		while ($i -lt $toolCount){
+			$tool = $timelineTools[$i]
+			Move-Item -Path "$Dest\$tool" -Destination "$Dest\tln_tools"
+			$i+=1
+		}
+		Copy-Item -Path "$Dest\regripper\p2x5124.dll" -Destination "$Dest\tln_tools"
+	}
+	catch
+	{
+		Write-Host "Unable to create $Dest\tln_tools directory. You may need to manually create this folder and move the related tools."
+	}
+}
+
+# Synchronize maps for EZTools
+$ezTools = @("EvtxECmd","RECmd","SQLECmd")
+$i = 0
+$toolCount = $ezTools.count
+$curDir = Get-Location
+while ($i -lt $toolCount) {
+	$tool = $ezTools[$i]
+	Set-Location -Path "$Dest$tool"
+	Invoke-Expression ".\$tool.exe --sync"
+	Set-Location $curDir
+	$i+=1
+}
+
 Write-host "`nSaving downloaded version information to $localDetailsFile`n" -ForegroundColor Red
-$downloadedOK | export-csv -Path  $localDetailsFile
+$downloadedOK | export-csv -Path  $localDetailsFile -NoTypeInformation
