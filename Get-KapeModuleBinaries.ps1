@@ -499,7 +499,7 @@ $toolCount = $ezTools.count
 $curDir = Get-Location
 while ($i -lt $toolCount) {
 	$tool = $ezTools[$i]
-	Set-Location -Path "$Dest$tool"
+	Set-Location -Path "$Dest\$tool"
 	Invoke-Expression ".\$tool.exe --sync"
 	Set-Location $curDir
 	$i+=1
