@@ -366,7 +366,7 @@ if (Test-Path "$Dest\RegistryExplorer"){
         }
     } 
 
-    $reCmdChanges = @("$Dest\RegistryExplorer\RECmd.exe","$Dest\RegistryExplorer\BatchExamples\*.reb","$Dest\RegistryExplorer\Plugins")
+    $reCmdChanges = @("$Dest\RegistryExplorer\RECmd.exe","$Dest\RegistryExplorer\BatchExamples","$Dest\RegistryExplorer\Plugins")
 
     foreach($change in $reCmdChanges) {
         try
