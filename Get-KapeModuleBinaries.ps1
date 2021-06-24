@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     This script will discover and download all available EXE, ZIP, and PS1 files referenced in KAPE Module files and download them to $Dest
     or optionally can be fed a txt file containing URLs to download.
@@ -103,7 +103,7 @@ if($UseBinaryList){
     }
         
         $progressPreference = 'Continue'
-        $regex = [regex] '(?i)\b(http.)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$].(zip|txt|ps1|exe)'
+        $regex = [regex] '(?i)\b(http|https)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$].(zip|txt|ps1|exe)'
         $matchdetails = $regex.Match($BinaryContent)  
 }
 
@@ -112,7 +112,7 @@ elseif($CreateBinaryList){
     Write-Host "`nDumping list of Binary URLs to console" -BackgroundColor Blue
     try
     {
-        $mkapeContent = Get-Content $modulePath\*.mkape -ErrorAction Stop
+        $mkapeContent = Get-ChildItem -Path $modulePath -Recurse -Filter *.mkape | Get-Content -ErrorAction Stop
     }
     catch
     {
@@ -120,7 +120,7 @@ elseif($CreateBinaryList){
     } 
 
     $progressPreference = 'Continue'
-    $regex = [regex] '(?i)\b(http.)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$].(zip|txt|ps1|exe)'
+    $regex = [regex] '(?i)\b(http|https)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$].(zip|txt|ps1|exe)'
     $matchdetails = $regex.Matches($mkapeContent) | Select-Object -Unique
 
     Write-Output $matchdetails.value
@@ -132,7 +132,7 @@ else
     $progressPreference = 'silentlyContinue'
     try
     {
-        $mkapeContent = Get-Content $modulePath\*.mkape -ErrorAction Stop
+        $mkapeContent = Get-ChildItem -Path $modulePath -Recurse -Filter *.mkape | Get-Content -ErrorAction Stop
     }
     catch
     {
@@ -140,7 +140,7 @@ else
     } 
 
     $progressPreference = 'Continue'
-    $regex = [regex] '(?i)\b(http.)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$].(zip|txt|ps1|exe)'
+    $regex = [regex] '(?i)\b(http|https)://[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$].(zip|txt|ps1|exe)'
     $matchdetails = $regex.Match($mkapeContent)
     
     
@@ -338,14 +338,14 @@ foreach($webItems in $webKeyCollection)
 
 # Check to make sure \EvtxExplorer is in $dest before doing anything
 if (Test-Path "$Dest\EvtxExplorer"){
-    # Rename EvtxExplorer directory to EvtxECmd to match path in EvtxECmd.mkape
+    # Move EvtxExplorer directory to EvtxECmd to match path in EvtxECmd.mkape
     try
     {
-        Rename-Item -Path "$Dest\EvtxExplorer" -NewName "$Dest\EvtxECmd" -Force -ErrorAction Stop
+        Move-Item -Path "$Dest\EvtxExplorer" -Destination "$Dest\EvtxECmd" -Force -ErrorAction Stop
     }
     catch
     {
-        Write-Host "Unable to rename $Dest\EvtxExplorer to $Dest\EvtxECmd. Directory may need to be manually renamed for EvtxECmd.mkape to function properly"
+        Write-Host "Unable to move $Dest\EvtxExplorer to $Dest\EvtxECmd. Directory may need to be manually renamed for EvtxECmd.mkape to function properly"
     }
 }
 
@@ -353,7 +353,7 @@ if (Test-Path "$Dest\EvtxExplorer"){
 
 # Check to make sure \RegistryExplorer is in $dest before doing anything
 if (Test-Path "$Dest\RegistryExplorer"){
-    $reCmdDir = "$dest\ReCmd"
+    $reCmdDir = "$dest\RECmd"
     if(!(Test-Path -Path $ReCmdDir))
     {
         try
@@ -362,11 +362,11 @@ if (Test-Path "$Dest\RegistryExplorer"){
         }
         catch
         {
-            Write-Host "Unable to create directory path: $RECmdDir. You may need to manually create \Kape\Modules\Bin\ReCmd" -ForegroundColor Yellow
+            Write-Host "Unable to create directory path: $RECmdDir. You may need to manually create \Kape\Modules\Bin\RECmd" -ForegroundColor Yellow
         }
     } 
 
-    $reCmdChanges = @("$Dest\RegistryExplorer\ReCmd.exe","$Dest\RegistryExplorer\BatchExamples\*.reb","$Dest\RegistryExplorer\Plugins")
+    $reCmdChanges = @("$Dest\RegistryExplorer\RECmd.exe","$Dest\RegistryExplorer\BatchExamples","$Dest\RegistryExplorer\Plugins")
 
     foreach($change in $reCmdChanges) {
         try
@@ -391,7 +391,7 @@ if (Test-Path "$Dest\RegistryExplorer"){
 }
 
 # Additonal cleanup of tools that must reside directly in \Kape\Modules\Bin
-$toolPath = @("$Dest\ShellBagsExplorer\SBECmd.exe","$Dest\win64\densityscout.exe","$Dest\sqlite-tools-win32-x86-3270200\*.exe")
+$toolPath = @("$Dest\ShellBagsExplorer\SBECmd.exe","$Dest\win64\densityscout.exe","$Dest\sqlite-tools-win32-x86-3270200\*.exe","$Dest\volatility_2.6_win64_standalone\volatility_2.6_win64_standalone.exe")
 foreach($tool in $toolPath){
 
     # Check to make sure each $tool is in $dest before doing anything
@@ -418,5 +418,92 @@ foreach($tool in $toolPath){
     }
 }
 
+# Additonal files to copy to \Kape\Modules\Bin
+$toolPath = @("$Dest\RegRipper2.8-master\p2x5124.dll")
+foreach($tool in $toolPath){
+
+    # Check to make sure each $tool is in $dest before doing anything
+    if (Test-Path $tool){
+        try
+        {
+            Copy-Item -Path $tool -Destination $Dest -Force -ErrorAction Stop
+        }
+        catch
+        {
+            Write-Host "Unable to copy $tool to $Dest. You may need to manually copy this for the module to function properly" -ForegroundColor Yellow
+        }
+    }
+}
+
+# Additonal cleanup of tools that must be renamed in \Kape\Modules\Bin
+$toolPath = @("$Dest\exiftool(-k).exe","exiftool.exe","$Dest\winpmem_3.2.exe","winpmem.exe","$Dest\RegRipper3.0-master","regripper","$Dest\win32","win32","$Dest\KAPE","KAPE")
+$i = 0
+$toolCount = $toolPath.count
+while ($i -lt $toolCount){
+	$tool = $toolPath[$i]
+	$newName = $toolPath[$i+1]
+    # Check to make sure each $tool is in the $dest before doing anything
+    if (Test-Path $toolPath[$i]){
+		# If the downloaded tool exists, check for the renamed version
+		if (!(Test-Path "$Dest\$newName")){
+			# If the tool has not been renamed, do that
+			try
+			{
+				Rename-Item -Path $toolPath[$i] -NewName $newName -Force -ErrorAction Stop
+			}
+			catch
+			{
+				Write-Host "Unable to rename $tool to $newName. You may need to manually rename this for the module to function properly." -ForegroundColor Yellow
+			}
+		}
+		else {
+			# Otherwise, both exist.  Remove the original downloaded file
+			try
+			{
+				Remove-Item -Path $toolPath[$i] -Recurse -Force -ErrorAction Stop
+			}
+			catch
+			{
+				Write-Host "Unable to delete $tool. You may need to manually delete this file." -ForegroundColor Yellow
+			}
+		}
+    }
+	$i+=2
+}
+
+# Create folder for timeline tools and move related executables
+$timelineTools = @("unicode_2_ascii.exe","evtxECmd_2_tln.exe","evtparse.exe","bodyfile.exe","parse.exe","regtime.exe")
+$i = 0
+$toolCount = $timelineTools.count
+if (!(Test-Path "$Dest\tln_tools")){
+	try
+	{
+		New-Item -Path "$Dest\tln_tools" -ItemType Directory > $null
+		while ($i -lt $toolCount){
+			$tool = $timelineTools[$i]
+			Move-Item -Path "$Dest\$tool" -Destination "$Dest\tln_tools"
+			$i+=1
+		}
+		Copy-Item -Path "$Dest\regripper\p2x5124.dll" -Destination "$Dest\tln_tools"
+	}
+	catch
+	{
+		Write-Host "Unable to create $Dest\tln_tools directory. You may need to manually create this folder and move the related tools."
+	}
+}
+
+# Synchronize maps for EZTools
+$ezTools = @("EvtxECmd","RECmd","SQLECmd")
+$i = 0
+$toolCount = $ezTools.count
+$curDir = Get-Location
+while ($i -lt $toolCount) {
+	$tool = $ezTools[$i]
+	Set-Location -Path "$Dest\$tool"
+	Invoke-Expression ".\$tool.exe --sync"
+	Set-Location $curDir
+	$i+=1
+}
+
 Write-host "`nSaving downloaded version information to $localDetailsFile`n" -ForegroundColor Red
-$downloadedOK | export-csv -Path  $localDetailsFile
+$downloadedOK | export-csv -Path  $localDetailsFile -NoTypeInformation
